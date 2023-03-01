@@ -3,8 +3,8 @@ import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 import UsersList from "./components/User.js";
-import MenuContainer from "./components/MenuContainer";
-import FooterContainer from "./components/FooterContainer";
+import Menu from "./components/Menu";
+import Footer from "./components/Footer";
 
 class App extends React.Component {
   constructor(props) {
@@ -45,11 +45,16 @@ class App extends React.Component {
 
     render() {
       return (
-          // <MenuContainer />
-          <div>
-            <UsersList users={this.state.users}/>
+          <div className="sub_body">
+              <div className="top App_header">
+                <Menu />
+                <hr></hr>
+                <UsersList users={this.state.users}/>
+              </div>
+              <div className="footer">
+                  <hr></hr><Footer />
+              </div>
           </div>
-          // <FooterContainer />
       );
   }
 }
