@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
+import UsersList from "./components/User.js";
+import MenuContainer from "./components/MenuContainer";
+import FooterContainer from "./components/FooterContainer";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,35 +14,44 @@ class App extends React.Component {
       }
   }
 
-  render() {
+  componentDidMount() {
+      // заглушка со статичными данными
+      // const users = [
+      //     {
+      //         'username': 'Tst-1',
+      //         'last_name': 'LN_Test-1',
+      //         'first_name': 'FN_Test-1',
+      //         'email': 'test1@mail.ru'
+      //     },
+      //     {
+      //         'username': 'Tst-2',
+      //         'last_name': 'LN_Test-2',
+      //         'first_name': 'FN_Test-2',
+      //         'email': 'test2@mail.ru'
+      //     },
+      // ]
+
+      axios
+          .get('http://localhost:8000/api/users/')
+          .then(response => {
+            this.setState(
+          {
+                    'users': response.data
+                }
+            )
+          })
+          .catch(error => console.log(error))
+  }
+
+    render() {
       return (
+          // <MenuContainer />
           <div>
-            Main frontend APP
+            <UsersList users={this.state.users}/>
           </div>
+          // <FooterContainer />
       );
   }
 }
-
-// исходная заготовка при генерации проекта
-// function App() {
-//   return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-//   );
-// }
 
 export default App;

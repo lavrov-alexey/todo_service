@@ -25,6 +25,5 @@ router.register('users', UserModelViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('', include(router.urls)),  # по-умолчанию - сразу будем переходить к api/
-    # path('api/', include(router.urls)),
+    path('api/', include(router.urls)),
 ]
