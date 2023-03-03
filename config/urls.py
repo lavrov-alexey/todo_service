@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import DefaultRouter, SimpleRouter
 
 from users.views import UserModelViewSet
 from todo.views import ProjectModelViewSet, TodoModelViewSet
 
+# в проде обычно используют SimpleRouter - без отображения точек входа API
+# c DefaultRouter - тоже самое, но отображаются точки входа API (для отладки обычно)
 router = DefaultRouter()
 router.register('users', UserModelViewSet)
 router.register('projects', ProjectModelViewSet)
