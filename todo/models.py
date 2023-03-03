@@ -24,7 +24,7 @@ class Project(models.Model):
 
 
 class Todo(models.Model):
-    project = models.OneToOneField(Project, on_delete=models.CASCADE, verbose_name="Project at")
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name="Project at")
     todo_text = models.TextField(null=False, blank=False, verbose_name='ToDo Text')
     creator = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Created by User")
     is_active = models.BooleanField(default=True, verbose_name="Is active")
