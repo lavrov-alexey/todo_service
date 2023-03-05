@@ -7,8 +7,8 @@ from todo.serializers import ProjectModelSerializer, TodoModelSerializer
 
 class ProjectModelViewSet(ModelViewSet):
     # Можем переопределить рендер для конкретного класса - например - отображение в чистом JSON
-    # renderer_classes = [JSONRenderer]
-    renderer_classes = [AdminRenderer]
+    renderer_classes = [JSONRenderer]
+    # renderer_classes = [AdminRenderer]
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
 
