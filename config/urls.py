@@ -20,6 +20,7 @@ from rest_framework.routers import DefaultRouter, SimpleRouter
 # раcкомментировать нужный вариант вьюхи для User
 # from users.views import UserModelViewSet
 from users.views import UserCustomViewSet
+from users.views import UserAPIView
 
 from todo.views import ProjectModelViewSet, TodoModelViewSet
 
@@ -37,5 +38,6 @@ router.register('todo', TodoModelViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    # path('api/users/', UserAPIView.as_view()),
     path('api/', include(router.urls)),
 ]
