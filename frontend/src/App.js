@@ -34,10 +34,12 @@ class App extends React.Component {
       axios
           .get('http://localhost:8000/api/users/')
           .then(response => {
-            this.setState(
-          {
-                    'users': response.data
-                }
+              # если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
+              const users = response.data.results
+              this.setState(
+                  {
+                    'users': users
+                    }
             )
           })
           .catch(error => console.log(error))
