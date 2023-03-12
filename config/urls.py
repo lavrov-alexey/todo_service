@@ -17,18 +17,27 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter, SimpleRouter
 
-from users.views import UserModelViewSet
+# раcкомментировать нужный вариант вьюхи для User
+# from users.views import UserModelViewSet
+from users.views import UserCustomViewSet
+from users.views import UserAPIView
+
 from todo.views import ProjectModelViewSet, TodoModelViewSet
 
 # в проде обычно используют SimpleRouter - без отображения точек входа API
 # c DefaultRouter - тоже самое, но отображаются точки входа API (для отладки обычно)
 router = DefaultRouter()
-router.register('users', UserModelViewSet)
+
+# раcкомментировать нужный вариант вьюхи для User
+# router.register('users', UserModelViewSet)
+router.register('users', UserCustomViewSet)
+
 router.register('projects', ProjectModelViewSet)
 router.register('todo', TodoModelViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
+    # path('api/users/', UserAPIView.as_view()),
     path('api/', include(router.urls)),
 ]
