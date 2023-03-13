@@ -11,7 +11,7 @@ class Project(models.Model):
     is_deleted = models.BooleanField(default=False, verbose_name="Is deleted")
 
     def __str__(self):
-        return f'{self.pk} - {self.name} - {self.created_at}'
+        return f'{self.pk} - {self.name}'
 
     def delete(self, *args, **kwargs):
         self.is_deleted = True
@@ -33,7 +33,8 @@ class Todo(models.Model):
     is_deleted = models.BooleanField(default=False, verbose_name="Is deleted")
 
     def __str__(self):
-        return f'{self.pk} - {self.project[:10]} - {self.todo_text[:10]} - {self.creator} - {self.updated_at}'
+        return f'{self.pk} - "{self.project[:5]}...{self.project[-5:]}" - "{self.todo_text[:10]}..." - ' \
+               f'{self.creator} - {self.updated_at}'
 
     def delete(self, *args, **kwargs):
         self.is_deleted = True

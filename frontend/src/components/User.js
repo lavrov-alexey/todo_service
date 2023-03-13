@@ -20,7 +20,7 @@ const UserItem = ({user}) => {
     )
 }
 
-const UsersList = ({users}) => {
+const UserList = ({users}) => {
 
     return (
         <table>
@@ -41,4 +41,4 @@ const UsersList = ({users}) => {
     )
 }
 
-export default UsersList
+export default UserList

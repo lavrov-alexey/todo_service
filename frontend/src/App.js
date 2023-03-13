@@ -2,7 +2,9 @@ import React from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-import UsersList from "./components/User.js";
+import UserList from "./components/User.js";
+import ProjectList from "./components/Project.js";
+import TodoList from "./components/Todo.js";
 import Menu from "./components/Menu";
 import Footer from "./components/Footer";
 
@@ -10,7 +12,9 @@ class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          'users': []
+          'users': [],
+          'projects': [],
+          'todos': [],
       }
   }
 
@@ -34,11 +38,37 @@ class App extends React.Component {
       axios
           .get('http://localhost:8000/api/users/')
           .then(response => {
-              # если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
+              // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const users = response.data.results
               this.setState(
                   {
                     'users': users
+                    }
+            )
+          })
+          .catch(error => console.log(error))
+
+      axios
+          .get('http://localhost:8000/api/projects/')
+          .then(response => {
+              // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
+              const projects = response.data.results
+              this.setState(
+                  {
+                    'projects': projects
+                    }
+            )
+          })
+          .catch(error => console.log(error))
+
+      axios
+          .get('http://localhost:8000/api/todo/')
+          .then(response => {
+              // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
+              const todos = response.data.results
+              this.setState(
+                  {
+                    'todos': todos
                     }
             )
           })
@@ -51,7 +81,9 @@ class App extends React.Component {
               <div className="top App_header">
                 <Menu />
                 <hr></hr>
-                <UsersList users={this.state.users}/>
+                <UserList users={this.state.users}/>
+                <ProjectList projects={this.state.projects}/>
+                <TodoList todo={this.state.todo}/>
               </div>
               <div className="footer">
                   <hr></hr><Footer />
