@@ -32,8 +32,11 @@ const ProjectTodoItem = ({todo}) => {
 
 const ProjectTodoList = ({todos}) => {
     // используя функцию - получаем параметры и отбираем заметки, относящиеся к переданному id проекта
-    let params = useParams()
-    let filteredTodos = todos.filter((todo) => todo.project === parseInt(params.projectId))
+    // let params = useParams()
+    // let filteredTodos = todos.filter((todo) => todo.project === parseInt(params.projectId))
+    // тоже самое, но в стиле js - из объекта params разворачиваем объект в одноименную локальную переменную
+    let {projectId} = useParams()
+    let filteredTodos = todos.filter((todo) => todo.project === parseInt(projectId))
 
     return (
         <table>

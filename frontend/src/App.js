@@ -94,7 +94,7 @@ class App extends React.Component {
 
                     <Routes>
                       {/*включаем локальный роутинг SPA на стороне клиента*/}
-                      <Route exact path='/' element={<ProjectList projects={this.state.projects} />} />
+                      <Route exact path='/' element={<Navigate to='/projects' />} />
                       <Route exact path='/users' element={<UserList users={this.state.users} />} />
                       <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
                       {/*создаем динам. путь для вывода всех заметок конкретного проекта*/}
@@ -102,8 +102,6 @@ class App extends React.Component {
                         <Route index element={<ProjectList projects={this.state.projects} />} />
                         <Route path=':projectId' element={<ProjectTodoList todos={this.state.todos} />} />
                       </Route>
-
-
                     </Routes>
                   </BrowserRouter>
               </div>
