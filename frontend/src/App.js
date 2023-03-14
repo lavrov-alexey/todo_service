@@ -5,6 +5,8 @@ import './App.css';
 import UserList from "./components/User.js";
 import ProjectList from "./components/Project.js";
 import TodoList from "./components/Todo.js";
+import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate}
+    from 'react-router-dom'
 import Menu from "./components/Menu";
 import Footer from "./components/Footer";
 
@@ -80,11 +82,23 @@ class App extends React.Component {
       return (
           <div className="sub_body">
               <div className="top App_header">
-                <Menu />
+                {/*меню из отдельного компонента*/}
+                {/*<Menu />*/}
                 <hr></hr>
-                <UserList users={this.state.users}/>
-                <ProjectList projects={this.state.projects}/>
-                <TodoList todos={this.state.todos}/>
+                  <BrowserRouter>
+                      <nav>
+                          <li> <Link to='/'>Project list</Link> </li>
+                          <li> <Link to='/todo'>ToDo list</Link> </li>
+                          <li> <Link to='/users'>User list</Link> </li>
+                      </nav>
+
+                    <Routes>
+                      {/*включаем локальный роутинг SPA на стороне клиента*/}
+                      <Route exact path='/' element={<ProjectList projects={this.state.projects} />} />
+                      <Route exact path='/users' element={<UserList users={this.state.users} />} />
+                      <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
+                    </Routes>
+                  </BrowserRouter>
               </div>
               <div className="footer">
                   <hr></hr><Footer />
