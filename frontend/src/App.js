@@ -66,6 +66,7 @@ class App extends React.Component {
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const todos = response.data.results
+              console.log(todos)
               this.setState(
                   {
                     'todos': todos
@@ -83,7 +84,7 @@ class App extends React.Component {
                 <hr></hr>
                 <UserList users={this.state.users}/>
                 <ProjectList projects={this.state.projects}/>
-                <TodoList todo={this.state.todo}/>
+                <TodoList todos={this.state.todos}/>
               </div>
               <div className="footer">
                   <hr></hr><Footer />

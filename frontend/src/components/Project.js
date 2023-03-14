@@ -13,15 +13,15 @@ const ProjectItem = ({project}) => {
             <td>
                 {project.users}
             </td>
-            <td>
-                {project.created_at}
-            </td>
-            <td>
-                {project.updated_at}
-            </td>
-            <td>
-                {project.is_deleted}
-            </td>
+            {/*<td>*/}
+            {/*    {project.created_at}*/}
+            {/*</td>*/}
+            {/*<td>*/}
+            {/*    {project.updated_at}*/}
+            {/*</td>*/}
+            {/*<td>*/}
+            {/*    {project.is_deleted}*/}
+            {/*</td>*/}
         </tr>
     )
 }
@@ -39,15 +39,15 @@ const ProjectList = ({projects}) => {
             <th>
                 Allowed users
             </th>
-            <th>
-                Created
-            </th>
-            <th>
-                Updated
-            </th>
-            <th>
-                Is deleted
-            </th>
+            {/*<th>*/}
+            {/*    Created*/}
+            {/*</th>*/}
+            {/*<th>*/}
+            {/*    Updated*/}
+            {/*</th>*/}
+            {/*<th>*/}
+            {/*    Is deleted*/}
+            {/*</th>*/}
             {projects.map((project) => <ProjectItem project={project} />)}
         </table>
     )

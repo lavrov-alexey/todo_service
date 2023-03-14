@@ -8,6 +8,7 @@ from todo.filters import TodoFilter
 from todo.models import Project, Todo
 from todo.serializers import ProjectModelSerializer, TodoModelSerializer
 
+
 class ProjectPagination(PageNumberPagination):
     PAGE_SIZE = 10
 
