@@ -1,6 +1,7 @@
 import React from 'react';
+import {useParams} from 'react-router-dom'
 
-const TodoItem = ({todo}) => {
+const ProjectTodoItem = ({todo}) => {
 
     return (
         <tr>
@@ -29,7 +30,10 @@ const TodoItem = ({todo}) => {
     )
 }
 
-const TodoList = ({todos}) => {
+const ProjectTodoList = ({todos}) => {
+    // используя функцию - получаем параметры и отбираем заметки, относящиеся к переданному id проекта
+    let params = useParams()
+    let filteredTodos = todos.filter((todo) => todo.project === parseInt(params.projectId))
 
     return (
         <table>
@@ -54,9 +58,9 @@ const TodoList = ({todos}) => {
             {/*<th>*/}
             {/*    Is deleted*/}
             {/*</th>*/}
-            {todos.map((todo) => <TodoItem todo={todo} />)}
+            {filteredTodos.map((todo) => <ProjectTodoItem todo={todo} />)}
         </table>
     )
 }
 
-export default TodoList
+export default ProjectTodoList

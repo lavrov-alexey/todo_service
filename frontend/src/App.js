@@ -5,6 +5,7 @@ import './App.css';
 import UserList from "./components/User.js";
 import ProjectList from "./components/Project.js";
 import TodoList from "./components/Todo.js";
+import ProjectTodoList from "./components/ProjectTodo"
 import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate}
     from 'react-router-dom'
 import Menu from "./components/Menu";
@@ -68,7 +69,6 @@ class App extends React.Component {
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const todos = response.data.results
-              console.log(todos)
               this.setState(
                   {
                     'todos': todos
@@ -97,6 +97,13 @@ class App extends React.Component {
                       <Route exact path='/' element={<ProjectList projects={this.state.projects} />} />
                       <Route exact path='/users' element={<UserList users={this.state.users} />} />
                       <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
+                      {/*создаем динам. путь для вывода всех заметок конкретного проекта*/}
+                      <Route path='/projects'>
+                        <Route index element={<ProjectList projects={this.state.projects} />} />
+                        <Route path=':projectId' element={<ProjectTodoList todos={this.state.todos} />} />
+                      </Route>
+
+
                     </Routes>
                   </BrowserRouter>
               </div>
