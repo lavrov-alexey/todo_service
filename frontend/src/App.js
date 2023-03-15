@@ -6,10 +6,22 @@ import UserList from "./components/User.js";
 import ProjectList from "./components/Project.js";
 import TodoList from "./components/Todo.js";
 import ProjectTodoList from "./components/ProjectTodo"
-import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate}
+import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate, useLocation}
     from 'react-router-dom'
 import Menu from "./components/Menu";
 import Footer from "./components/Footer";
+
+
+const PageNotFound = () => {
+  // распаковываем из полученного объекта путь страницы, откуда пришли сюда в лок. переменную
+  let {pathname} = useLocation()
+
+  return (
+      <div>
+          Page "{pathname}" not found!
+      </div>
+  )
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -102,6 +114,9 @@ class App extends React.Component {
                         <Route index element={<ProjectList projects={this.state.projects} />} />
                         <Route path=':projectId' element={<ProjectTodoList todos={this.state.todos} />} />
                       </Route>
+                      {/*добавляем обработку несуществующих в приложении путей*/}
+                      <Route path='*' element={<PageNotFound />} />
+
                     </Routes>
                   </BrowserRouter>
               </div>

@@ -17,7 +17,7 @@ class ProjectModelSerializer(ModelSerializer):
 class TodoModelSerializer(ModelSerializer):
     # получаем развернутый связанный объект проекта, к кот. относится заметка
     # project = ProjectModelSerializer()
-    # отключаем "красивости", чтобы на фронте можно было отбирать по id
+    # отключаем строковые представления, чтобы на фронте можно было отбирать по id
     # project = serializers.StringRelatedField(many=False)
     # creator = serializers.StringRelatedField(many=False)
 
