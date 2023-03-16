@@ -97,6 +97,9 @@ class App extends React.Component {
                 {/*меню из отдельного компонента*/}
                 {/*<Menu />*/}
                 <hr></hr>
+
+                  {/*при использовании HashRouter: http://localhost:3000/#/users*/}
+                  {/*при использовании BrowserRouter: http://localhost:3000/users*/}
                   <BrowserRouter>
                       <nav>
                           <li> <Link to='/'>Project list</Link> </li>
