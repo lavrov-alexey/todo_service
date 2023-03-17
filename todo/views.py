@@ -8,6 +8,7 @@ from todo.filters import TodoFilter
 from todo.models import Project, Todo
 from todo.serializers import ProjectModelSerializer, TodoModelSerializer
 
+
 class ProjectPagination(PageNumberPagination):
     PAGE_SIZE = 10
 
@@ -15,7 +16,7 @@ class ProjectPagination(PageNumberPagination):
 class ProjectModelViewSet(ModelViewSet):
     # Можем переопределить рендер для конкретного класса - например - отображение в чистом JSON
     # renderer_classes = [JSONRenderer]
-    renderer_classes = [AdminRenderer]
+    # renderer_classes = [AdminRenderer]
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
     pagination_class = ProjectPagination
@@ -29,6 +30,7 @@ class ProjectModelViewSet(ModelViewSet):
             # если передавалась в пар-рах подстрока для поиска - отфильтровываем из выборки
             queryset = queryset.filter(name__contains=name)
         return queryset
+
 
 class TodoPagination(PageNumberPagination):
     PAGE_SIZE = 20
