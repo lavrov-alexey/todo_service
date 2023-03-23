@@ -150,8 +150,11 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100,
-    # добавляем настройку, чтобы в api мог обращаться только аутентифицированный пользователь
+
+    # глобальная настройка прав для проекта, чтобы в api мог обращаться только аутентифицированный пользователь
+    # безопаснее явно делать настройки для каждой сущности отдельно, чтобы не пропустить лишнего
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+    # указываем возможные варианты аутентификации для проекта (по id сессии, по логину/паролю, по токену)
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
