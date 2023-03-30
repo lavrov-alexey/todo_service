@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, \
     BasePermission, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly
-    # включает интеграцию моделей разрешений Django DRF, все автор-ные - могут читать
+    # включает интеграцию моделей разрешений Django DRF, все авторизованные - могут читать
 
 from todo.filters import TodoFilter
 from todo.models import Project, Todo

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'django_filters',
     'corsheaders',
     'users',
@@ -153,11 +155,15 @@ REST_FRAMEWORK = {
 
     # глобальная настройка прав для проекта, чтобы в api мог обращаться только аутентифицированный пользователь
     # безопаснее явно делать настройки для каждой сущности отдельно, чтобы не пропустить лишнего
-    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated'],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.DjangoModelPermissions',
+    ],
     # указываем возможные варианты аутентификации для проекта (по id сессии, по логину/паролю, по токену)
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ]
 }
