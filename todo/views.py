@@ -3,10 +3,22 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 from rest_framework.renderers import JSONRenderer, AdminRenderer
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser, \
+    BasePermission, DjangoModelPermissions, DjangoModelPermissionsOrAnonReadOnly
+    # включает интеграцию моделей разрешений Django DRF, все авторизованные - могут читать
 
 from todo.filters import TodoFilter
 from todo.models import Project, Todo
 from todo.serializers import ProjectModelSerializer, TodoModelSerializer
+
+
+# На основе базового класса - можно создавать свои классы разрешений, переопред. метод has_permission
+# DjangoModelPermissions - интеграция моделей разрешений Django и DRF, все авторизованные пользователи - могут читать
+# DjangoModelPermissionsOrAnonReadOnly - все неавториз. пользователи могут читать
+class CustomPermissions(BasePermission):
+    def has_permission(self, request, view):
+        # Должен возвращать bool, напр. если есть юзер и у него задано имя
+        return request.user and request.username
 
 
 class ProjectPagination(PageNumberPagination):
