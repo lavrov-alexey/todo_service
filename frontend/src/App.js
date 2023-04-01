@@ -6,6 +6,7 @@ import UserList from "./components/User.js";
 import ProjectList from "./components/Project.js";
 import TodoList from "./components/Todo.js";
 import ProjectTodoList from "./components/ProjectTodo"
+import LoginForm from "./components/LoginForm";
 import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate, useLocation}
     from 'react-router-dom'
 import Menu from "./components/Menu";
@@ -106,11 +107,13 @@ class App extends React.Component {
                           <li> <Link to='/'>Project list</Link> </li>
                           <li> <Link to='/todo'>ToDo list</Link> </li>
                           <li> <Link to='/users'>User list</Link> </li>
+                          <li> <Link to='/login'>Login</Link> </li>
                       </nav>
 
                     <Routes>
                       {/*включаем локальный роутинг SPA на стороне клиента*/}
                       <Route exact path='/' element={<Navigate to='/projects' />} />
+                      <Route exact path='/login' element={<LoginForm />} />
                       <Route exact path='/users' element={<UserList users={this.state.users} />} />
                       <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
                       {/*создаем динам. путь для вывода всех заметок конкретного проекта*/}
