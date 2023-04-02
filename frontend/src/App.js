@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import logo from './logo.svg';
 import './App.css';
 import UserList from "./components/User.js";
 import ProjectList from "./components/Project.js";
@@ -36,7 +35,9 @@ class App extends React.Component {
   }
 
    isAuth() {
-      return this.state.token != ''
+      // первый ! - преобразует в js в bool-тип, а второй ! - инвертирует полученный bool
+      // если ключа token вообще нет в локал сторадже, то вернется не '', а undefined, поэтому нужен перевод в bool
+      return !!this.state.token
    }
 
     // метод для проброса внутрь компонента ЛогинФорм и вытаскивания оттуда введенных пользователем логина и пароля
@@ -52,6 +53,10 @@ class App extends React.Component {
           .then(response => {
               const token = response.data.token
               // console.log('token: ', token)
+
+              // сохраняем полученный токен в локальном хранилище (более современный вариант, чем cookies
+              localStorage.setItem('token', token)
+
               // setState - асинхронная функция и чтобы дождаться установки в состоянии токена пользователя и только
               // потом делать запросы уже с токеном - нужно 2ым параметром передать колл-бэк функции, которая будет
               // вызвана только после завершения работы функции setState
@@ -63,7 +68,12 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-      this.getData()
+      // первым делом - поднимаем токен из закрытого локального хранилища (если он там есть)
+      let token = localStorage.getItem('token')
+      // и сохраняем его в текущем состоянии и только после этого - запрашиваем данные из бэка
+      this.setState({
+          'token': token,
+      }, this.getData)
   }
 
   getHeaders() {
@@ -102,41 +112,48 @@ class App extends React.Component {
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const users = response.data.results
-              this.setState(
-                  {
-                    'users': users
-                    }
-            )
+              this.setState({'users': users})
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+              // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
+              console.log(error)
+              this.setState({'users': []})
+          })
 
       axios
           .get('http://localhost:8000/api/projects/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const projects = response.data.results
-              this.setState(
-                  {
-                    'projects': projects
-                    }
-            )
+              this.setState({'projects': projects})
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+              // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
+              console.log(error)
+              this.setState({'projects': []})
+          })
 
       axios
           .get('http://localhost:8000/api/todo/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const todos = response.data.results
-              this.setState(
-                  {
-                    'todos': todos
-                    }
-            )
+              this.setState({'todos': todos})
           })
-          .catch(error => console.log(error))
+          .catch(error => {
+              // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
+              console.log(error)
+              this.setState({'todos': []})
+          })
   }
 
+  // при разлогинивании - гасим токен и перечитываем заново данные из бэка
+  logOut() {
+      localStorage.setItem('token', '')
+      this.setState({
+          'token': '',
+      }, this.getData)
+  }
 
     render() {
       return (
@@ -153,7 +170,13 @@ class App extends React.Component {
                           <li> <Link to='/'>Project list</Link> </li>
                           <li> <Link to='/todo'>ToDo list</Link> </li>
                           <li> <Link to='/users'>User list</Link> </li>
-                          <li> <Link to='/login'>Login</Link> </li>
+                          {/*В зависимости от того залогинен или нет - показываем разные кнопки*/}
+                          <li> {
+                              this.isAuth()
+                              ? <button onClick={() => this.logOut()}>Logout</button>
+                              : <Link to='/login'>Login</Link>
+                                }
+                          </li>
                       </nav>
 
                     <Routes>
