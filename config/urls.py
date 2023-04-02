@@ -43,7 +43,7 @@ urlpatterns = [
     path('api-auth-token/', views.obtain_auth_token),
     path('api-jwt-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api-jwt-token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    path('api-jwt-token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     # path('api/users/', UserAPIView.as_view()),
     path('api/', include(router.urls)),
 ]
