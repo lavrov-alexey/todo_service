@@ -31,10 +31,52 @@ class App extends React.Component {
           'users': [],
           'projects': [],
           'todos': [],
+          'token': '',
       }
   }
 
+   isAuth() {
+      return this.state.token != ''
+   }
+
+    // метод для проброса внутрь компонента ЛогинФорм и вытаскивания оттуда введенных пользователем логина и пароля
+    obtainAuthToken(login, password) {
+        // console.log('obtainAuthToken:', login, password)
+
+        // направляем post запрос с логином и паролем для получения токена из бэка
+        axios
+          .post('http://localhost:8000/api-auth-token/', {
+              "username": login,
+              "password": password,
+          })
+          .then(response => {
+              const token = response.data.token
+              // console.log('token: ', token)
+              // setState - асинхронная функция и чтобы дождаться установки в состоянии токена пользователя и только
+              // потом делать запросы уже с токеном - нужно 2ым параметром передать колл-бэк функции, которая будет
+              // вызвана только после завершения работы функции setState
+              this.setState({
+                  'token': token,
+              }, this.getData)
+          })
+          .catch(error => console.log(error))
+  }
+
   componentDidMount() {
+      this.getData()
+  }
+
+  getHeaders() {
+      // если токен в состоянии уже есть (авторизованы) - отдаем заголовок с ним, иначе - пустой объект
+      if (this.isAuth()) {
+          return {
+              'Authorization': 'Token ' + this.state.token
+          }
+      }
+      return {}
+  }
+
+  getData() {
       // заглушка со статичными данными
       // const users = [
       //     {
@@ -51,8 +93,12 @@ class App extends React.Component {
       //     },
       // ]
 
+      // получаем заголовки для запросов
+      let headers = this.getHeaders()
+
       axios
-          .get('http://localhost:8000/api/users/')
+          //полная запись передачи заголовков: {'headers': headers}, но можно передать короче, т.к. назв. поля то же
+          .get('http://localhost:8000/api/users/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const users = response.data.results
@@ -65,7 +111,7 @@ class App extends React.Component {
           .catch(error => console.log(error))
 
       axios
-          .get('http://localhost:8000/api/projects/')
+          .get('http://localhost:8000/api/projects/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const projects = response.data.results
@@ -78,7 +124,7 @@ class App extends React.Component {
           .catch(error => console.log(error))
 
       axios
-          .get('http://localhost:8000/api/todo/')
+          .get('http://localhost:8000/api/todo/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
               const todos = response.data.results
@@ -113,7 +159,9 @@ class App extends React.Component {
                     <Routes>
                       {/*включаем локальный роутинг SPA на стороне клиента*/}
                       <Route exact path='/' element={<Navigate to='/projects' />} />
-                      <Route exact path='/login' element={<LoginForm />} />
+                      {/*прокидываем в компонент коллбэк функции, чтобы вытащить логин, пароль оттуда*/}
+                      <Route exact path='/login' element={<LoginForm
+                          obtainAuthToken={(login, password) => this.obtainAuthToken(login, password)}/>} />
                       <Route exact path='/users' element={<UserList users={this.state.users} />} />
                       <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
                       {/*создаем динам. путь для вывода всех заметок конкретного проекта*/}

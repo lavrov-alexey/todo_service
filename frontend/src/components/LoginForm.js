@@ -19,7 +19,10 @@ class LoginForm extends React.Component {
 
   // локальный обработчик на событие отправки формы логина
   handleSubmit(event) {
-      // для начала останавливаем действия браузера по-умолчанию, чтобы не обновлялась стр. и не отправлялся get-запрос
+      // console.log(this.state.login, this.state.password)
+      // в метод основного компонента прокидываем из нашего компонента введенные пользователем логин и пароль
+      this.props.obtainAuthToken(this.state.login, this.state.password)
+      // останавливаем действия браузера по-умолчанию, чтобы не обновлялась стр. и не отправлялся get-запрос
       event.preventDefault()
   }
 
