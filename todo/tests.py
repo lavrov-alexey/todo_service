@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIRequestFactory, force_authenticate, APIClient, APITestCase
 from rest_framework import status
-# from django.contrib.auth.models import User
+from mixer.backend.django import mixer
 from .views import ProjectModelViewSet
 from users.models import User
 from todo.models import Project, Todo
@@ -52,8 +52,11 @@ class TodoClientTestCase(APITestCase):
     def setUp(self) -> None:
         # для того, чтобы авторизоваться в запросе - создадим суперпользователя и пр. данные
         self.user = User.objects.create_superuser(username='testSU', password='qwerty1234', email='testSU@mail.ru')
-        self.project = Project.objects.create(name='Project Test')
-        self.todo = Todo.objects.create(project=self.project, todo_text='Test ToDo text', creator=self.user)
+        # self.project = Project.objects.create(name='Project Test')
+        # исп. Миксер, чтобы сгенерить поля по модели автом., часть полей - можно вручную, связанные модели
+        self.project = mixer.blend(Project)
+        # self.todo = Todo.objects.create(project=self.project, todo_text='Test ToDo text', creator=self.user)
+        self.todo = mixer.blend(Todo, todo_text='Special concrete text', project__repo_link='test mixer custom link')
 
     def test_anonim_get_todo_list(self):
         # создаем и направляем полноценный api-запрос
