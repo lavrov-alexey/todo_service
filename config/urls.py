@@ -45,9 +45,17 @@ urlpatterns = [
     path('api-jwt-token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api-jwt-token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     # path('api/users/', UserAPIView.as_view()),
-    # задаем эндпоинт для запроса пользователей с версией api
+    path('api/', include(router.urls)),
+
+    # 1 вариант версионирования в URL
+    # задаем эндпоинт для запроса пользователей с версией api (регуляркой задаем шаблон версии в виде "ЦИФРА.ЦИФРА")
+    # преимущество - можно использовать для задания конкр. версий конкретным методам api
     # http://localhost:8000/api/users/
     # http://localhost:8000/api/2.0/users/
-    re_path(r'^api/(?P<version>\d\.\d)/users/$', UserCustomViewSet.as_view({'get': 'list'})),
-    path('api/', include(router.urls)),
+    # re_path(r'^api/(?P<version>\d\.\d)/users/$', UserCustomViewSet.as_view({'get': 'list'})),
+    # path('api/<str:version>/users/', UserCustomViewSet.as_view({'get': 'list'})),
+
+    # 2 вариант версионирования через пространство имён - позволяет разделить название в URL и версию в программе
+    # path('api/2.0/', include((router.urls, 'users'), namespace='2.0')),
+    # path('api/ver2/', include((router.urls, 'users'), namespace='2.0')),
 ]
