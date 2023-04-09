@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
+# Импортируем разные варианты версионирования
+from rest_framework.versioning import URLPathVersioning, NamespaceVersioning, HostNameVersioning, \
+    QueryParameterVersioning, AcceptHeaderVersioning
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
     'django_filters',
     'corsheaders',
     'users',
@@ -165,5 +169,25 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    # задаем используемый вариант версионирования
+    # 1. Через задание версии непосредственно в url
+    # http://localhost:8000/api/users/
+    # http://localhost:8000/api/2.0/users/
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    # 2. Через пространство имён (неймспейсы)
+    # http://localhost:8000/api/users/
+    # http://localhost:8000/api/2.0/users/  или  http://localhost:8000/api/ver2/users/
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.NamespaceVersioning',
+    # 3. Через имя хоста (переносим версионирование из проблемы бекэнда в проблему администрирования). Использ. редко
+    # http://v1.localhost:8000/api/2.0/users/
+    # http://v2.localhost:8000/api/2.0/users/
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.HostNameVersioning',
+    # 4. Через параметры запроса (часто используется).
+    # Проблема может быть только с фильтрацией и наличием параметра с именем version
+    # http://v1.localhost:8000/api/users/?version=2.0
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
+    # 5. Через заголовки запроса (самый удобный и рекомендуемый).
+    # Единственный недостаток - не очень удобно отлаживать (нужно что-то типа postman)
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
 }

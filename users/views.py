@@ -6,7 +6,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import UserModelSerializer
+from .serializers import UserModelSerializer, UserModelSerializerVer2
 from .models import User
 
 # Если нужно обработать запросы в функции - делать через декоратор, в кот. указать запросы
@@ -26,17 +26,25 @@ from .models import User
 class UserCustomViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin, viewsets.GenericViewSet):
     queryset = User.objects.all()
-    serializer_class = UserModelSerializer
+    serializer_class = UserModelSerializer  # статически задаваемый сериализатор
+
+    # динамически выбираемый сериализатор в зависимости от переданной в запросе версии api
+    def get_serializer_class(self):
+
+        # if self.request.version == '2.0':
+        if self.request.query_params and self.request.query_params["version"] == '2.0':
+            return UserModelSerializerVer2
+        return UserModelSerializer
 
 
 # вариант реализации части методов (GET, UPDATE) на базе APIView
-class UserAPIView(APIView):
-
-    # http://localhost:8000/api/users/
-    def get(self, request, format=None):
-        users = User.objects.all()
-        serializer = UserModelSerializer(users, many=True)
-        return Response(serializer.data)
+# class UserAPIView(APIView):
+#
+#     # http://localhost:8000/api/users/
+#     def get(self, request, format=None):
+#         users = User.objects.all()
+#         serializer = UserModelSerializer(users, many=True)
+#         return Response(serializer.data)
 
     # def put(self, request, format=None):
     #     serializer = UserModelSerializer(user, data=data)
