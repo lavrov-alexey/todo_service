@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from rest_framework import permissions
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.authtoken import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 
 # раcкомментировать нужный вариант вьюхи для User
 # from users.views import UserModelViewSet
@@ -25,6 +28,18 @@ from users.views import UserCustomViewSet
 # from users.views import UserAPIView
 
 from todo.views import ProjectModelViewSet, TodoModelViewSet
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title='ToDo for Projects',
+        default_version='1.0',
+        description='Documentation on project',
+        license=openapi.License(name='MIT'),
+        contact=openapi.Contact(email='megacunt@mail.ru')
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
 
 # в проде обычно используют SimpleRouter - без отображения точек входа API
 # c DefaultRouter - тоже самое, но отображаются точки входа API (для отладки обычно)
@@ -46,6 +61,14 @@ urlpatterns = [
     path('api-jwt-token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     # path('api/users/', UserAPIView.as_view()),
     path('api/', include(router.urls)),
+
+    # добавляем автодокументирование api с помощью Swagger, ReDoc
+    # вариант с UI-интерфейсом
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # вариант без UI в вариантах с json, yaml. Переменная format будет определять формат выдачи
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$',
+            schema_view.without_ui(cache_timeout=0), name='schema-swagger-woui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     # 1 вариант версионирования в URL
     # задаем эндпоинт для запроса пользователей с версией api (регуляркой задаем шаблон версии в виде "ЦИФРА.ЦИФРА")

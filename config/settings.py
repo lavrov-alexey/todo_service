@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
     'django_filters',
     'corsheaders',
     'users',
@@ -185,8 +186,8 @@ REST_FRAMEWORK = {
     # 4. Через параметры запроса (часто используется).
     # Проблема может быть только с фильтрацией и наличием параметра с именем version
     # http://v1.localhost:8000/api/users/?version=2.0
-    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
     # 5. Через заголовки запроса (самый удобный и рекомендуемый).
     # Единственный недостаток - не очень удобно отлаживать (нужно что-то типа postman)
-    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
+    # 'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
 }

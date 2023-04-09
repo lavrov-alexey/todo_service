@@ -6,7 +6,7 @@ from rest_framework import mixins, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .serializers import UserModelSerializer, UserModelSerializerFull
+from .serializers import UserModelSerializer, UserModelSerializerVer2
 from .models import User
 
 # Если нужно обработать запросы в функции - делать через декоратор, в кот. указать запросы
@@ -30,8 +30,10 @@ class UserCustomViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin,
 
     # динамически выбираемый сериализатор в зависимости от переданной в запросе версии api
     def get_serializer_class(self):
-        if self.request.version == '2.0':
-            return UserModelSerializerFull
+
+        # if self.request.version == '2.0':
+        if self.request.query_params and self.request.query_params["version"] == '2.0':
+            return UserModelSerializerVer2
         return UserModelSerializer
 
 

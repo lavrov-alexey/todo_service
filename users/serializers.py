@@ -10,7 +10,7 @@ class UserModelSerializer(ModelSerializer):
         # fields = '__all__'
 
 
-class UserModelSerializerFull(ModelSerializer):
+class UserModelSerializerVer2(ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('last_name', 'first_name', 'username', 'email', 'is_staff', 'is_superuser')
