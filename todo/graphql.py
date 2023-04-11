@@ -34,6 +34,11 @@ class Query(graphene.ObjectType):
     # для получ. по id - нужно передать тип возвращаемых данных и входные - этот id и указываем, что это обяз. параметр
     get_project_by_id = graphene.Field(ProjectObjectType, pk=graphene.Int(required=True))
     get_user_by_id = graphene.Field(UserObjectType, pk=graphene.Int(required=True))
+    # команда получения пользователей по заданным фамилии и/или имени (фильтрация) - необяз. параметры
+    get_user_by_name = graphene.List(UserObjectType,  # возвращаемый тип - список пользователей графена
+                                     first_name=graphene.String(required=False),  # тип - строка графена
+                                     last_name=graphene.String(required=False)  # тип - строка графена
+                                     )
 
     # описываем собственно саму команду - начинается с "resolve_" и имени команды
     def resolve_all_projects(self, info):
@@ -50,6 +55,23 @@ class Query(graphene.ObjectType):
 
     def resolve_get_user_by_id(self, info, pk):
         return User.objects.get(pk=pk)
+        # запрос по конкретному пользователю с получением сразу по нему списков его заметок и проектов, куда он допущен
+        # для связей 1 ко многим и многие ко многим - в django автоматом создается поле Somename_Set
+        # вот так можно вернуть все проекты (все их поля), к которым есть доступ у конкретного запрошенного пользователя
+        # return User.objects.get(pk=pk).project_set.all()
+
+    # функция для фильтрации пользователей по переданным имени и/или фамилии
+    def resolve_get_user_by_name(self, info, first_name=None, last_name=None):
+        fio_dict = {}
+        if first_name:
+            # добавив __contains - делаем станд. фильтрацию Джанго по подстроке
+            fio_dict['first_name__contains'] = first_name
+        if last_name:
+            fio_dict['last_name__contains'] = last_name
+        if fio_dict:
+            return User.objects.filter(**fio_dict)
+        # если не переданы - отдаем полный список
+        return User.objects.all()
 
 # class Query(graphene.ObjectType):  # первичная тренировка
 #     # описываем в схеме команду и какой тип данных будет возвращен
