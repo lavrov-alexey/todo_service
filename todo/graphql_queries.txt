@@ -98,3 +98,14 @@ allTodo {
     username
   }
 }
+##########################################################
+mutation {  # запрос на создание проекта
+  createProject(name: "TestProject-GQL", repoLink: "TestLink", isDeleted: false)
+#   пишем какие поля из возвращаемого объекта нам вернуть
+  {
+    project {
+      id
+      name
+    }
+  }
+}

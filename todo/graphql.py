@@ -80,4 +80,32 @@ class Query(graphene.ObjectType):
 #     def resolve_hello(self, info):
 #         return 'world'
 
-schema = graphene.Schema(query=Query)
+# Все операции на создание, изменение, удаление - в графене это мутации
+class ProjectCreateMutation(graphene.Mutation):
+    # класс Arguments - для описания входных параметров
+    class Arguments:
+        # входные параметры
+        name = graphene.String(required=True)
+        repo_link = graphene.String(required=True)
+        # users = graphene.List(UserObjectType)
+        is_deleted = graphene.Boolean(required=True)
+
+    # возвращаемый параметр
+    project = graphene.Field(ProjectObjectType)
+
+    @classmethod  # метод изменения оформляется как класс-метод, отдаем входные параметры
+    def mutate(cls, root, info, name, repo_link='', is_deleted=False):
+    # def mutate(cls, root, info, name, repo_link, users, is_deleted=False):
+        # подставляем вх. параметры в модель Джанго и сохраняем
+        project = Project(name=name, repo_link=repo_link, is_deleted=is_deleted)
+        # project = Project(name=name, repo_link=repo_link, users=users, is_deleted=is_deleted)
+        project.save()
+        return cls(project)
+
+
+# создаем класс с мутациями
+class Mutatitions(graphene.ObjectType):
+    create_project = ProjectCreateMutation.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutatitions)
