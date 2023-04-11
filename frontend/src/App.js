@@ -111,7 +111,8 @@ class App extends React.Component {
           .get('http://localhost:8000/api/users/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
-              const users = response.data.results
+              // const users = response.data.results
+              const users = response.data
               this.setState({'users': users})
           })
           .catch(error => {
@@ -124,7 +125,8 @@ class App extends React.Component {
           .get('http://localhost:8000/api/projects/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
-              const projects = response.data.results
+              // const projects = response.data.results
+              const projects = response.data
               this.setState({'projects': projects})
           })
           .catch(error => {
@@ -137,7 +139,8 @@ class App extends React.Component {
           .get('http://localhost:8000/api/todo/', {headers})
           .then(response => {
               // если используем в беке пагинацию - результат глубже - в results, если не используем, то просто в data
-              const todos = response.data.results
+              // const todos = response.data.results
+              const todos = response.data
               this.setState({'todos': todos})
           })
           .catch(error => {

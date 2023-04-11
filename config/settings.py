@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
     'drf_yasg',
+    'graphene_django',
     'django_filters',
     'corsheaders',
     'users',
@@ -122,6 +123,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+GRAPHENE = {
+    # прописываем - где лежит файл с нашей схемой GraphQL (наш файл graphql.py)
+    'SCHEMA': 'todo.graphql.schema'
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
