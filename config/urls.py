@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.authtoken import views
@@ -64,7 +65,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
 
     # добавляем точку входа для GraphQL, сразу включаем удобное отображение параметром
-    path('graphql/', GraphQLView.as_view(graphiql=True)),
+    # path('graphql/', GraphQLView.as_view(graphiql=True)),
+    # для передачи post запросов извне (напр. через Postman) - нужно отключить контроль csrf-токена
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 
     # добавляем автодокументирование api с помощью Swagger, ReDoc
     # вариант с UI-интерфейсом
