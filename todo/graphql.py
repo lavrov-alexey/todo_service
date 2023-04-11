@@ -103,9 +103,42 @@ class ProjectCreateMutation(graphene.Mutation):
         return cls(project)
 
 
+class ProjectUpdateMutation(graphene.Mutation):
+    # класс Arguments - для описания входных параметров
+    class Arguments:
+        # входные параметры
+        pk = graphene.ID(required=True)
+        name = graphene.String(required=False)
+        repo_link = graphene.String(required=False)
+        # users = graphene.List(UserObjectType)
+        is_deleted = graphene.Boolean(required=False)
+
+    # возвращаемый параметр
+    project = graphene.Field(ProjectObjectType)
+
+    @classmethod  # метод изменения оформляется как класс-метод, отдаем входные параметры
+    def mutate(cls, root, info, pk, name=None, repo_link=None, is_deleted=False):
+    # def mutate(cls, root, info, name, repo_link, users, is_deleted=False):
+        # находим сначала по id запрошенный project
+        project = Project.objects.get(pk=pk)
+        # если параметры переданы (не пустые) - сохраняем их в соотв. параметры модели
+        if name:
+            project.name = name
+        if repo_link:
+            project.repo_link = repo_link
+        if is_deleted:
+            project.is_deleted = is_deleted
+
+        # если хоть что-то нам передали для изменения - сохраняем, иначе - не нужно
+        if name or repo_link or is_deleted:
+            project.save()
+        return cls(project)
+
+
 # создаем класс с мутациями
 class Mutatitions(graphene.ObjectType):
     create_project = ProjectCreateMutation.Field()
+    update_project = ProjectUpdateMutation.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutatitions)
