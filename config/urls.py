@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter, SimpleRouter
 from rest_framework.authtoken import views
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from graphene_django.views import GraphQLView
 
 # раcкомментировать нужный вариант вьюхи для User
 # from users.views import UserModelViewSet
@@ -61,6 +63,11 @@ urlpatterns = [
     path('api-jwt-token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     # path('api/users/', UserAPIView.as_view()),
     path('api/', include(router.urls)),
+
+    # добавляем точку входа для GraphQL, сразу включаем удобное отображение параметром
+    # path('graphql/', GraphQLView.as_view(graphiql=True)),
+    # для передачи post запросов извне (напр. через Postman) - нужно отключить контроль csrf-токена
+    path('graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 
     # добавляем автодокументирование api с помощью Swagger, ReDoc
     # вариант с UI-интерфейсом
