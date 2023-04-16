@@ -39,7 +39,8 @@ class ProjectForm extends React.Component {
 
   // локальный обработчик на событие отправки формы логина
   handleSubmit(event) {
-      console.log(this.state.name, this.state.repo_link, this.state.users)
+      this.props.createProject(this.state.name, this.state.repo_link, this.state.users)
+      // console.log(this.state.name, this.state.repo_link, this.state.users)
       // останавливаем действия браузера по-умолчанию, чтобы не обновлялась стр. и не отправлялся get-запрос
       event.preventDefault()
   }
