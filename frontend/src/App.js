@@ -6,6 +6,8 @@ import ProjectList from "./components/Project.js";
 import TodoList from "./components/Todo.js";
 import ProjectTodoList from "./components/ProjectTodo"
 import LoginForm from "./components/LoginForm";
+import TodoForm from "./components/TodoForm";
+import ProjectForm from "./components/ProjectForm";
 import {HashRouter, BrowserRouter, Route, Routes, Link, Navigate, useLocation}
     from 'react-router-dom'
 import Menu from "./components/Menu";
@@ -170,14 +172,16 @@ class App extends React.Component {
                   {/*при использовании BrowserRouter: http://localhost:3000/users*/}
                   <BrowserRouter>
                       <nav>
-                          <li> <Link to='/'>Project list</Link> </li>
-                          <li> <Link to='/todo'>ToDo list</Link> </li>
-                          <li> <Link to='/users'>User list</Link> </li>
+                          <li> <Link to='/'>Список проектов</Link> </li>
+                          <li> <Link to='/create_project'>Создать проект</Link> </li>
+                          <li> <Link to='/todo'>Список записей</Link> </li>
+                          <li> <Link to='/create_todo'>Создать запись</Link> </li>
+                          <li> <Link to='/users'>Список пользователей</Link> </li>
                           {/*В зависимости от того залогинен или нет - показываем разные кнопки*/}
                           <li> {
                               this.isAuth()
-                              ? <button onClick={() => this.logOut()}>Logout</button>
-                              : <Link to='/login'>Login</Link>
+                              ? <button onClick={() => this.logOut()}>Выйти</button>
+                              : <Link to='/login'>Войти</Link>
                                 }
                           </li>
                       </nav>
@@ -190,6 +194,8 @@ class App extends React.Component {
                           obtainAuthToken={(login, password) => this.obtainAuthToken(login, password)}/>} />
                       <Route exact path='/users' element={<UserList users={this.state.users} />} />
                       <Route exact path='/todo' element={<TodoList todos={this.state.todos} />} />
+                      <Route exact path='/create_project' element={<ProjectForm users={this.state.users} />} />
+                      <Route exact path='/create_todo' element={<TodoForm projects={this.state.projects} />} />
                       {/*создаем динам. путь для вывода всех заметок конкретного проекта*/}
                       <Route path='/projects'>
                         <Route index element={<ProjectList projects={this.state.projects} />} />
