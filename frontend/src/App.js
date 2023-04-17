@@ -66,7 +66,11 @@ class App extends React.Component {
                     'token': token,
                 }, this.getData)
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.log(error)
+                alert("При попытке получения токена по логину и паролю - возникла ошибка:\n\n" + error)
+            })
+
     }
 
     createProject(name, repo_link, users) {
@@ -85,8 +89,9 @@ class App extends React.Component {
                 this.getData()
             })
             .catch(error => {
-                // если ошибка (например 403 - доступ запрещен или что-то еще) - просто напечатаем ошибку
+                // если ошибка (например 403 - доступ запрещен или что-то еще) - ошибку в консоль и вывод на экран
                 console.log(error)
+                alert("При попытке создания проекта возникла ошибка:\n\n" + error)
             })
     }
 
@@ -142,6 +147,7 @@ class App extends React.Component {
                 // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
                 console.log(error)
                 this.setState({'users': []})
+                alert("При запросе данных пользователей с сервера возникла ошибка:\n\n" + error)
             })
 
         axios
@@ -156,6 +162,7 @@ class App extends React.Component {
                 // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
                 console.log(error)
                 this.setState({'projects': []})
+                alert("При запросе данных по проектам с сервера возникла ошибка:\n\n" + error)
             })
 
         axios
@@ -170,6 +177,7 @@ class App extends React.Component {
                 // если ошибка (например 403 - доступ запрещен) - печатаем ошибку и сбрасываем данные в текущ. состоянии
                 console.log(error)
                 this.setState({'todos': []})
+                alert("При запросе данных по заметкам с сервера возникла ошибка:\n\n" + error)
             })
     }
 
