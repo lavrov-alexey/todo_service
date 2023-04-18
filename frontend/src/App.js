@@ -33,6 +33,7 @@ class App extends React.Component {
             'projects': [],
             'todos': [],
             'token': '',
+            // 'redirect': false  // состояние перенаправления (после успешного завершения логина, создания сущности)
         }
     }
 
@@ -64,6 +65,7 @@ class App extends React.Component {
                 // вызвана только после завершения работы функции setState
                 this.setState({
                     'token': token,
+                    // 'redirect': '/',
                 }, this.getData)
             })
             .catch(error => {
@@ -74,7 +76,7 @@ class App extends React.Component {
     }
 
     createProject(name, repo_link, users) {
-        console.log(name, repo_link, users)
+        // console.log(name, repo_link, users)
 
         let headers = this.getHeaders()  // получаем заголовки для запросов
 
@@ -87,6 +89,11 @@ class App extends React.Component {
                 // возможны 2 варианта - создавать сущность на фронте, дублируя логику бэка - усложнение схемы
                 // или просто перечитать все данные из бэка снова - медленнее, но надежнее. Идем по варианту 2
                 this.getData()
+                // при успешном создании проекта - выставляем свойство редиректа на список проектов
+                // и перезагружаем заново данные из бэка (при этом свойство редиректа сбрасывается)
+                // this.setState({
+                //     'redirect': '/projects'
+                // }, this.getData)
             })
             .catch(error => {
                 // если ошибка (например 403 - доступ запрещен или что-то еще) - ошибку в консоль и вывод на экран
@@ -101,6 +108,7 @@ class App extends React.Component {
         // и сохраняем его в текущем состоянии и только после этого - запрашиваем данные из бэка
         this.setState({
             'token': token,
+            // 'redirect': '/'  // после успешного логина - делаем редирект на корень проекта
         }, this.getData)
     }
 
@@ -130,6 +138,9 @@ class App extends React.Component {
         //         'email': 'test2@mail.ru'
         //     },
         // ]
+
+        // сбрасываем свойсттво перенаправления каждый раз при запросе данных
+        // this.setState({'redirect': false})
 
         // получаем заголовки для запросов
         let headers = this.getHeaders()
@@ -186,6 +197,7 @@ class App extends React.Component {
         localStorage.setItem('token', '')
         this.setState({
             'token': '',
+            // 'redirect': '/'  // редиректимся в корень проекта и переполучаем данные из бэка
         }, this.getData)
     }
 
@@ -200,6 +212,9 @@ class App extends React.Component {
                     {/*при использовании HashRouter: http://localhost:3000/#/users*/}
                     {/*при использовании BrowserRouter: http://localhost:3000/users*/}
                     <BrowserRouter>
+                        {/*используем тернарник - если статус redirect ложь - никуда не редиректимся, иначе - переход*/}
+                        {/*{this.state.redirect ? <Navigate to={this.state.redirect} /> : <div/>}*/}
+
                         <nav>
                             <li><Link to='/'>Список проектов</Link></li>
                             <li><Link to='/create_project'>Создать проект</Link></li>
@@ -222,7 +237,9 @@ class App extends React.Component {
                             <Route exact path='/login' element={<LoginForm
                                 obtainAuthToken={(login, password) => this.obtainAuthToken(login, password)}/>}/>
                             <Route exact path='/users' element={<UserList users={this.state.users}/>}/>
-                            <Route exact path='/todo' element={<TodoList todos={this.state.todos}/>}/>
+                            <Route exact path='/todo' element={<TodoList
+                                todos={this.state.todos}
+                                users={this.state.users}/>}/>
                             {/*передаем список пользователей в компонент для выбора допущенных к проекту и коллбек
                              функции создания проекта в компонент*/}
                             <Route exact path='/create_project' element={<ProjectForm

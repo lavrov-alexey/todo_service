@@ -1,7 +1,6 @@
 import React from 'react';
 
 const TodoItem = ({todo}) => {
-
     return (
         <tr>
             <td>
@@ -11,6 +10,7 @@ const TodoItem = ({todo}) => {
                 {todo.todo_text}
             </td>
             <td>
+                {/*{this.props.users[1]}*/}
                 {todo.creator}
             </td>
             {/*<td>*/}
@@ -29,7 +29,9 @@ const TodoItem = ({todo}) => {
     )
 }
 
-const TodoList = ({todos}) => {
+const TodoList = ({todos, users}) => {
+    console.log(todos)
+    console.log(users)
 
     return (
         <table>
@@ -54,7 +56,7 @@ const TodoList = ({todos}) => {
             {/*<th>*/}
             {/*    Is deleted*/}
             {/*</th>*/}
-            {todos.map((todo) => <TodoItem todo={todo} />)}
+            {todos.map((todo) => <TodoItem todo={todo}/>)}
         </table>
     )
 }

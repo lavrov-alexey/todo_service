@@ -160,8 +160,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # Использование пагинации данных для проекта в целом
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 100,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100,
 
     # глобальная настройка прав для проекта, чтобы в api мог обращаться только аутентифицированный пользователь
     # безопаснее явно делать настройки для каждой сущности отдельно, чтобы не пропустить лишнего

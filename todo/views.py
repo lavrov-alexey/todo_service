@@ -21,8 +21,8 @@ class CustomPermissions(BasePermission):
         return request.user and request.username
 
 
-# class ProjectPagination(PageNumberPagination):
-#     PAGE_SIZE = 10
+class ProjectPagination(PageNumberPagination):
+    PAGE_SIZE = 10
 
 
 class ProjectModelViewSet(ModelViewSet):
@@ -31,7 +31,7 @@ class ProjectModelViewSet(ModelViewSet):
     # renderer_classes = [AdminRenderer]
     queryset = Project.objects.all()
     serializer_class = ProjectModelSerializer
-    # pagination_class = ProjectPagination
+    pagination_class = ProjectPagination
 
     def get_queryset(self):
         queryset = Project.objects.all()
@@ -44,14 +44,14 @@ class ProjectModelViewSet(ModelViewSet):
         return queryset
 
 
-# class TodoPagination(PageNumberPagination):
-#     PAGE_SIZE = 20
+class TodoPagination(PageNumberPagination):
+    PAGE_SIZE = 20
 
 
 class TodoModelViewSet(ModelViewSet):
     queryset = Todo.objects.all()
     serializer_class = TodoModelSerializer
-    # pagination_class = TodoPagination
+    pagination_class = TodoPagination
     filterset_class = TodoFilter
 
     def destroy(self, request, *args, **kwargs):
