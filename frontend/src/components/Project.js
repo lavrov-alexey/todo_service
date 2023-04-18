@@ -11,9 +11,9 @@ const ProjectItem = ({project}) => {
             <td>
                 {project.repo_link}
             </td>
-            <td>
-                {project.users}
-            </td>
+            {/*<td>*/}
+            {/*    {project.users}*/}
+            {/*</td>*/}
             {/*<td>*/}
             {/*    {project.created_at}*/}
             {/*</td>*/}
@@ -37,9 +37,9 @@ const ProjectList = ({projects}) => {
             <th>
                 Repo link
             </th>
-            <th>
-                Allowed users
-            </th>
+            {/*<th>*/}
+            {/*    Allowed users*/}
+            {/*</th>*/}
             {/*<th>*/}
             {/*    Created*/}
             {/*</th>*/}

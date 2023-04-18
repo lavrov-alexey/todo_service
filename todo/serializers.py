@@ -7,7 +7,8 @@ from users.serializers import UserModelSerializer
 
 class ProjectModelSerializer(ModelSerializer):
     # получаем в API строковое представление пользователей
-    users = serializers.StringRelatedField(many=True)
+    # users = serializers.StringRelatedField(many=True)
+    users = serializers.DjangoModelField()
 
     class Meta:
         model = Project
